@@ -1,14 +1,15 @@
 const headline = document.querySelector("#headline")
 
-let fetchheadline = async function() {
-    let result= await fetch(
-        "https://newsapi.org/v2/top-headlines?country=in&apiKey=7430dbc0ee8f4436b76d3e342e4ca4d5"
-    );
-    let data =await result.json();
-    displayheadline(data.articles);
-
-
-}
+let fetchheadline = async function () {
+    try {
+        let result = await fetch("https://newsapi.org/v2/top-headlines?country=us&apiKey=7430dbc0ee8f4436b76d3e342e4ca4d5");
+        if (!result.ok) throw new Error(`Error: ${result.statusText}`);
+        let data = await result.json();
+        displayheadline(data.articles);
+    } catch (error) {
+        console.error('Failed to fetch headlines:', error);
+    }
+};
 
 fetchheadline();
 
@@ -25,7 +26,7 @@ let displayheadline = (data) =>{
 //bussiness newa details 
 let bussiness= document.getElementById("business");
 let fetchbussiness= async function(){
-    let result= await fetch('https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=7430dbc0ee8f4436b76d3e342e4ca4d5')
+    let result= await fetch('https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=7430dbc0ee8f4436b76d3e342e4ca4d5')
     let data= await result.json();
     displaybussiness(data.articles);
 }
@@ -54,7 +55,7 @@ let displaybussiness=(data)=>{
 
 let ent= document.getElementById("ent");
 let fetchent= async function(){
-    let result= await fetch('https://newsapi.org/v2/top-headlines?country=in&category=entertainment&apiKey=7430dbc0ee8f4436b76d3e342e4ca4d5')
+    let result= await fetch('https://newsapi.org/v2/top-headlines?country=us&category=entertainment&apiKey=7430dbc0ee8f4436b76d3e342e4ca4d5')
     let data= await result.json();
     displayent(data.articles);
 }
@@ -83,7 +84,7 @@ let displayent=(data)=>{
 
 let health= document.getElementById("health");
 let fetchhealth= async function(){
-    let result= await fetch('https://newsapi.org/v2/top-headlines?country=in&category=health&apiKey=7430dbc0ee8f4436b76d3e342e4ca4d5')
+    let result= await fetch('https://newsapi.org/v2/top-headlines?country=us&category=health&apiKey=7430dbc0ee8f4436b76d3e342e4ca4d5')
     let data= await result.json();
     displayhealth(data.articles);
 }
@@ -111,7 +112,7 @@ let displayhealth=(data)=>{
 //science news script
 let science= document.getElementById("science");
 let fetchscience= async function(){
-    let result= await fetch('https://newsapi.org/v2/top-headlines?country=in&category=science&apiKey=7430dbc0ee8f4436b76d3e342e4ca4d5')
+    let result= await fetch('https://newsapi.org/v2/top-headlines?country=us&category=science&apiKey=7430dbc0ee8f4436b76d3e342e4ca4d5')
     let data= await result.json();
     displayscience(data.articles);
 }
@@ -140,7 +141,7 @@ let displayscience=(data)=>{
 
 let sports= document.getElementById("sports");
 let fetchsports= async function(){
-    let result= await fetch('https://newsapi.org/v2/top-headlines?country=in&category=sports&apiKey=7430dbc0ee8f4436b76d3e342e4ca4d5')
+    let result= await fetch('https://newsapi.org/v2/top-headlines?country=us&category=sports&apiKey=7430dbc0ee8f4436b76d3e342e4ca4d5')
     let data= await result.json();
     displaysports(data.articles);
 }
@@ -169,12 +170,12 @@ let displaysports=(data)=>{
 
 let tech= document.getElementById("tech");
 let fetchtech= async function(){
-    let result= await fetch('https://newsapi.org/v2/top-headlines?country=in&category=technology&apiKey=7430dbc0ee8f4436b76d3e342e4ca4d5')
+    let result= await fetch('https://newsapi.org/v2/top-headlines?country=us&category=technology&apiKey=7430dbc0ee8f4436b76d3e342e4ca4d5')
     let data= await result.json();
     displaytech(data.articles);
 }
 
-fetchstech();
+fetchtech();
 
 let displaytech=(data)=>{
     console.log(data);
