@@ -1,196 +1,60 @@
-const headline = document.querySelector("#headline")
+// API Key and Base URL
+const API_KEY = "7430dbc0ee8f4436b76d3e342e4ca4d5";
+const BASE_URL = "https://newsapi.org/v2/top-headlines";
 
-let fetchheadline = async function () {
+// Fetch Data Function
+let fetchData = async (url) => {
     try {
-        let result = await fetch("https://newsapi.org/v2/top-headlines?country=us&apiKey=7430dbc0ee8f4436b76d3e342e4ca4d5");
-        if (!result.ok) throw new Error(`Error: ${result.statusText}`);
-        let data = await result.json();
-        displayheadline(data.articles);
+        let result = await fetch(url);
+        if (!result.ok) throw new Error(`HTTP error! Status: ${result.status}`);
+        return await result.json();
     } catch (error) {
-        console.error('Failed to fetch headlines:', error);
+        console.error(`Failed to fetch data from ${url}:`, error);
+        return null; // Return null if the request fails
     }
 };
 
-fetchheadline();
+// Display Articles Function
+let displayArticles = (data, container) => {
+    if (!data || !Array.isArray(data)) {
+        console.warn("No articles available to display.");
+        return;
+    }
 
-let displayheadline = (data) =>{
-    console.log(data);
-    data.forEach(element => {
-        const div =document.createElement("div");
-        div.style.backgroundImage=`url(${element.urlToImage})`;
-        div.innerHTML = `<h3>${element.title}</h3>`
-        headline.appendChild(div)
+    data.forEach(article => {
+        const div = document.createElement("div");
+        div.innerHTML = `
+            <h2>${article.source?.name || "Source unknown"}</h2>
+            <h4>${article.title || "Title unavailable"}</h4>
+            <img src="${article.urlToImage || "https://via.placeholder.com/150"}" alt="Image unavailable">
+            <p>${article.description || "Description unavailable"}</p>
+            <a href="${article.url}" target="_blank"><button>Explore Official Website</button></a>
+        `;
+        container.appendChild(div);
     });
 };
 
-//bussiness newa details 
-let bussiness= document.getElementById("business");
-let fetchbussiness= async function(){
-    let result= await fetch('https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=7430dbc0ee8f4436b76d3e342e4ca4d5')
-    let data= await result.json();
-    displaybussiness(data.articles);
-}
+// Fetch and Display News Function
+let fetchAndDisplay = async (category, container) => {
+    let url = `${BASE_URL}?country=us&${category ? `category=${category}&` : ""}apiKey=${API_KEY}`;
+    let data = await fetchData(url);
+    displayArticles(data?.articles, container);
+};
 
-fetchbussiness();
+// Containers
+let headlineContainer = document.querySelector("#headline");
+let businessContainer = document.getElementById("business");
+let entertainmentContainer = document.getElementById("ent");
+let healthContainer = document.getElementById("health");
+let scienceContainer = document.getElementById("science");
+let sportsContainer = document.getElementById("sports");
+let techContainer = document.getElementById("tech");
 
-let displaybussiness=(data)=>{
-    console.log(data);
-    data.forEach(element =>{
-        for(let key in element){
-            if(element[key]===null){
-                element[key]=`${key} will be updated soon...`
-            }
-        }
-        const div=document.createElement("div");
-        div.innerHTML=`<h2>${element.source.name}</h2>
-        <h4>${element.title}</h4>
-        <img src=${element.urlToImage} alt='Image will be updated soon'>
-        <p>${element.description}</p>
-        <a href=${element.url} target='_blank'><button>Explore Official Wewbsite </button></a>`
-        bussiness.appendChild(div)
-    })
-}
-
-//entairtainment news script
-
-let ent= document.getElementById("ent");
-let fetchent= async function(){
-    let result= await fetch('https://newsapi.org/v2/top-headlines?country=us&category=entertainment&apiKey=7430dbc0ee8f4436b76d3e342e4ca4d5')
-    let data= await result.json();
-    displayent(data.articles);
-}
-
-fetchent();
-
-let displayent=(data)=>{
-    console.log(data);
-    data.forEach(element =>{
-        for(let key in element){
-            if(element[key]===null){
-                element[key]=`${key} will be updated soon...`
-            }
-        }
-        const div=document.createElement("div");
-        div.innerHTML=`<h2>${element.source.name}</h2>
-        <h4>${element.title}</h4>
-        <img src=${element.urlToImage} alt='Image will be updated soon'>
-        <p>${element.description}</p>
-        <a href=${element.url} target='_blank'><button>Explore Official Wewbsite </button></a>`
-        ent.appendChild(div)
-    })
-}
-
-//health news script
-
-let health= document.getElementById("health");
-let fetchhealth= async function(){
-    let result= await fetch('https://newsapi.org/v2/top-headlines?country=us&category=health&apiKey=7430dbc0ee8f4436b76d3e342e4ca4d5')
-    let data= await result.json();
-    displayhealth(data.articles);
-}
-
-fetchhealth();
-
-let displayhealth=(data)=>{
-    console.log(data);
-    data.forEach(element =>{
-        for(let key in element){
-            if(element[key]===null){
-                element[key]=`${key} will be updated soon...`
-            }
-        }
-        const div=document.createElement("div");
-        div.innerHTML=`<h2>${element.source.name}</h2>
-        <h4>${element.title}</h4>
-        <img src=${element.urlToImage} alt='Image will be updated soon'>
-        <p>${element.description}</p>
-        <a href=${element.url} target='_blank'><button>Explore Official Wewbsite </button></a>`
-        health.appendChild(div)
-    })
-}
-
-//science news script
-let science= document.getElementById("science");
-let fetchscience= async function(){
-    let result= await fetch('https://newsapi.org/v2/top-headlines?country=us&category=science&apiKey=7430dbc0ee8f4436b76d3e342e4ca4d5')
-    let data= await result.json();
-    displayscience(data.articles);
-}
-
-fetchscience();
-
-let displayscience=(data)=>{
-    console.log(data);
-    data.forEach(element =>{
-        for(let key in element){
-            if(element[key]===null){
-                element[key]=`${key} will be updated soon...`
-            }
-        }
-        const div=document.createElement("div");
-        div.innerHTML=`<h2>${element.source.name}</h2>
-        <h4>${element.title}</h4>
-        <img src=${element.urlToImage} alt='Image will be updated soon'>
-        <p>${element.description}</p>
-        <a href=${element.url} target='_blank'><button>Explore Official Wewbsite </button></a>`
-        science.appendChild(div)
-    })
-}
-
-//sports news script
-
-let sports= document.getElementById("sports");
-let fetchsports= async function(){
-    let result= await fetch('https://newsapi.org/v2/top-headlines?country=us&category=sports&apiKey=7430dbc0ee8f4436b76d3e342e4ca4d5')
-    let data= await result.json();
-    displaysports(data.articles);
-}
-
-fetchsports();
-
-let displaysports=(data)=>{
-    console.log(data);
-    data.forEach(element =>{
-        for(let key in element){
-            if(element[key]===null){
-                element[key]=`${key} will be updated soon...`
-            }
-        }
-        const div=document.createElement("div");
-        div.innerHTML=`<h2>${element.source.name}</h2>
-        <h4>${element.title}</h4>
-        <img src=${element.urlToImage} alt='Image will be updated soon'>
-        <p>${element.description}</p>
-        <a href=${element.url} target='_blank'><button>Explore Official Wewbsite </button></a>`
-        sports.appendChild(div)
-    })
-}
-
-//technology script
-
-let tech= document.getElementById("tech");
-let fetchtech= async function(){
-    let result= await fetch('https://newsapi.org/v2/top-headlines?country=us&category=technology&apiKey=7430dbc0ee8f4436b76d3e342e4ca4d5')
-    let data= await result.json();
-    displaytech(data.articles);
-}
-
-fetchtech();
-
-let displaytech=(data)=>{
-    console.log(data);
-    data.forEach(element =>{
-        for(let key in element){
-            if(element[key]===null){
-                element[key]=`${key} will be updated soon...`
-            }
-        }
-        const div=document.createElement("div");
-        div.innerHTML=`<h2>${element.source.name}</h2>
-        <h4>${element.title}</h4>
-        <img src=${element.urlToImage} alt='Image will be updated soon'>
-        <p>${element.description}</p>
-        <a href=${element.url} target='_blank'><button>Explore Official Wewbsite </button></a>`
-        tech.appendChild(div)
-    })
-}
+// Fetch and Display News for Different Categories
+fetchAndDisplay(null, headlineContainer);       // General headlines
+fetchAndDisplay("business", businessContainer);
+fetchAndDisplay("entertainment", entertainmentContainer);
+fetchAndDisplay("health", healthContainer);
+fetchAndDisplay("science", scienceContainer);
+fetchAndDisplay("sports", sportsContainer);
+fetchAndDisplay("technology", techContainer);
